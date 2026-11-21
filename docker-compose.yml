@@ -1,0 +1,15 @@
+# Local production-like run:  cp .env.example .env  (fill it in), then:  docker compose up --build
+services:
+  db:
+    image: postgres:16
+    environment: { POSTGRES_USER: udaan, POSTGRES_PASSWORD: udaan, POSTGRES_DB: udaan }
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck: { test: ["CMD-SHELL", "pg_isready -U udaan"], interval: 5s, retries: 10 }
+  app:
+    build: .
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://udaan:udaan@db:5432/udaan
+    depends_on: { db: { condition: service_healthy } }
+    ports: ["3000:3000"]
+volumes: { pgdata: {} }
