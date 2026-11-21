@@ -42,10 +42,13 @@ const anthropicProvider: AiProvider = {
 /** Groq (OpenAI-compatible chat completions). No SDK needed. Free tier is rate limited, so 429s are retried once and then surface as an error that the chat layer handles safely. */
 async function groqRequest(o: GenOpts, stream: boolean, signal?: AbortSignal): Promise<Response> {
   const model = await pickModel(o.model);
+  const reasoning = model.startsWith("openai/gpt-oss");
   const body = {
-    model, stream, max_tokens: o.maxTokens ?? (stream ? 4000 : 3000),
-    // gpt-oss models reason before answering. High effort for quality; the larger max_tokens leaves room for the answer after the reasoning.
-    ...(model.startsWith("openai/gpt-oss") ? { reasoning_effort: "high" } : {}),
+    model, stream,
+    // gpt-oss models reason before answering, and reasoning tokens count against max_tokens. High effort for quality, so the caller's cap
+    // (sized for the visible answer) gets reasoning headroom on top; otherwise short caps like the classifier's would be spent before any answer.
+    max_tokens: (o.maxTokens ?? (stream ? 1200 : 800)) + (reasoning ? 3500 : 0),
+    ...(reasoning ? { reasoning_effort: "high" } : {}),
     messages: [{ role: "system", content: o.system }, ...o.messages],
     ...(o.json ? { response_format: { type: "json_object" } } : {}),
   };
