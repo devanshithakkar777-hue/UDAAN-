@@ -45,10 +45,10 @@ async function groqRequest(o: GenOpts, stream: boolean, signal?: AbortSignal): P
   const reasoning = model.startsWith("openai/gpt-oss");
   const body = {
     model, stream,
-    // gpt-oss models reason before answering, and reasoning tokens count against max_tokens. High effort for quality, so the caller's cap
+    // gpt-oss models reason before answering, and reasoning tokens count against max_tokens. Low effort keeps replies fast, and the caller's cap
     // (sized for the visible answer) gets reasoning headroom on top; otherwise short caps like the classifier's would be spent before any answer.
-    max_tokens: (o.maxTokens ?? (stream ? 1200 : 800)) + (reasoning ? 3500 : 0),
-    ...(reasoning ? { reasoning_effort: "high" } : {}),
+    max_tokens: (o.maxTokens ?? (stream ? 1200 : 800)) + (reasoning ? 1000 : 0),
+    ...(reasoning ? { reasoning_effort: "low" } : {}),
     messages: [{ role: "system", content: o.system }, ...o.messages],
     ...(o.json ? { response_format: { type: "json_object" } } : {}),
   };
