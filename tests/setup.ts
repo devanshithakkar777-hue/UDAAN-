@@ -6,6 +6,6 @@ process.env.AI_PROVIDER = "mock";
 process.env.DATA_ENCRYPTION_KEY ||= Buffer.alloc(32, 7).toString("base64");
 
 beforeAll(async () => {
-  const { runMigrations } = await import("../src/db/migrate");
+  const { runMigrations } = await import("../db/migrate");
   await runMigrations(process.env.DATABASE_URL);
 });

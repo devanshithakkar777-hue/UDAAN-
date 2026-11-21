@@ -3,8 +3,8 @@
 Everything here needs a human. The software cannot do it for you, and the admin **Overview → Launch readiness** panel reflects the technical items.
 
 ## 1. Must be done before any real user
-- [ ] **Clinician review of the crisis flow and persona.** Read `src/safety/crisis.ts`, `src/safety/resources.ts`, `src/ai/persona.ts`, `src/safety/postgate.ts`. Have a licensed clinician approve or edit the imminent-risk response, the elevated-risk wording, and the persona rules.
-- [ ] **Verify every helpline.** Call each number in `src/safety/resources.ts` (hours, language, who answers). Set `verified: true` per entry, then set `CRISIS_RESOURCES_VERIFIED=true`. Numbers change; set a recurring quarterly re-check. The AASRA, iCall, Vandrevala and other numbers shipped are *unverified placeholders*.
+- [ ] **Clinician review of the crisis flow and persona.** Read `safety/crisis.ts`, `safety/resources.ts`, `ai/persona.ts`, `safety/postgate.ts`. Have a licensed clinician approve or edit the imminent-risk response, the elevated-risk wording, and the persona rules.
+- [ ] **Verify every helpline.** Call each number in `safety/resources.ts` (hours, language, who answers). Set `verified: true` per entry, then set `CRISIS_RESOURCES_VERIFIED=true`. Numbers change; set a recurring quarterly re-check. The AASRA, iCall, Vandrevala and other numbers shipped are *unverified placeholders*.
 - [ ] **Legal review in India.** Privacy notice and terms (DPDP Act 2023: consent, notice, data principal rights, grievance officer, breach process, children), positioning as non-medical, Telemedicine / mental-health regulations as applicable, liability wording. Replace the plain-language summaries at `/privacy` and `/transparency` with counsel-approved text.
 - [ ] **Red-team with real people.** Run `npm run eval` against the live model *and* have testers try: crisis in each language, indirect/passive ideation, coercion framed as "family pressure", dependence/exclusivity bait, diagnosis and medication bait, substance coaching, jailbreaks. Read every transcript.
 - [ ] **Set secrets** (see `.env.example`), back up `DATA_ENCRYPTION_KEY` in a secrets manager (losing it = losing all user data), use SSL to Postgres, enable Postgres backups and test a restore.
@@ -12,7 +12,7 @@ Everything here needs a human. The software cannot do it for you, and the admin 
 
 ## 2. Content and people
 - [ ] **Approve knowledge items** (`/admin → Content`). Six drafts are seeded. The companion uses only items a *named* reviewer has approved.
-- [ ] **Hindi, Marathi, Gujarati** UI strings and crisis text: have native speakers (ideally a clinician in each) review `src/lib/i18n.ts` and `src/safety/crisis.ts`.
+- [ ] **Hindi, Marathi, Gujarati** UI strings and crisis text: have native speakers (ideally a clinician in each) review `lib/i18n.ts` and `safety/crisis.ts`.
 - [ ] **Enable gated modules** one at a time in `/admin → Controls`, only after clinical sign-off (e.g. substance, eating, grief, sensitive topics).
 - [ ] **Verify professionals** before listing anyone: check the registration number with the issuing body (RCI / NMC / state council). Nobody is listed until verified.
 - [ ] **Appoint and train moderators** (role `moderator`); define the response SLA for held posts and for incidents; define an on-call escalation path for level-3 incidents.
