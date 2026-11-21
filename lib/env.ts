@@ -24,8 +24,8 @@ export const env = {
   get anthropicKey() { return req("ANTHROPIC_API_KEY"); },
   get groqKey() { return req("GROQ_API_KEY"); },
   /** Default model per provider. Admin can override at runtime (Controls tab). */
-  get model() { return this.aiProvider === "groq" ? (process.env.GROQ_MODEL ?? "llama-3.3-70b-versatile") : (process.env.ANTHROPIC_MODEL ?? "claude-sonnet-5-5"); },
-  get classifierModel() { return this.aiProvider === "groq" ? (process.env.GROQ_CLASSIFIER_MODEL ?? "llama-3.1-8b-instant") : (process.env.ANTHROPIC_CLASSIFIER_MODEL ?? "claude-haiku-5-5"); },
+  get model() { return this.aiProvider === "groq" ? (process.env.GROQ_MODEL ?? "openai/gpt-oss-120b") : (process.env.ANTHROPIC_MODEL ?? "claude-sonnet-5-5"); },
+  get classifierModel() { return this.aiProvider === "groq" ? (process.env.GROQ_CLASSIFIER_MODEL ?? "openai/gpt-oss-20b") : (process.env.ANTHROPIC_CLASSIFIER_MODEL ?? "claude-haiku-5-5"); },
   get adminBootstrapEmail() { return (process.env.ADMIN_BOOTSTRAP_EMAIL ?? "").toLowerCase(); },
   get crisisVerified() { return process.env.CRISIS_RESOURCES_VERIFIED === "true"; },
   get vapid() {

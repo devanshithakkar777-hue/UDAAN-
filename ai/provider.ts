@@ -41,8 +41,11 @@ const anthropicProvider: AiProvider = {
 
 /** Groq (OpenAI-compatible chat completions). No SDK needed. Free tier is rate limited, so 429s are retried once and then surface as an error that the chat layer handles safely. */
 async function groqRequest(o: GenOpts, stream: boolean, signal?: AbortSignal): Promise<Response> {
+  const model = await pickModel(o.model);
   const body = {
-    model: await pickModel(o.model), stream, max_tokens: o.maxTokens ?? (stream ? 1200 : 800),
+    model, stream, max_tokens: o.maxTokens ?? (stream ? 1600 : 1000),
+    // gpt-oss models reason before answering; keep that short so replies are fast and the token budget goes to the answer.
+    ...(model.startsWith("openai/gpt-oss") ? { reasoning_effort: "low" } : {}),
     messages: [{ role: "system", content: o.system }, ...o.messages],
     ...(o.json ? { response_format: { type: "json_object" } } : {}),
   };
