@@ -56,7 +56,11 @@ async function groqRequest(o: GenOpts, stream: boolean, signal?: AbortSignal): P
       await new Promise((res) => setTimeout(res, wait * 1000));
       continue;
     }
-    if (!r.ok) throw new Error(`groq ${r.status}`);
+    if (!r.ok) {
+      // Provider error bodies describe the failure (bad model, bad key, quota) and never echo user content, so they are safe to log.
+      const detail = (await r.text().catch(() => "")).slice(0, 300).replace(/\s+/g, " ");
+      throw new Error(`groq ${r.status} model=${body.model} ${detail}`);
+    }
     return r;
   }
 }
