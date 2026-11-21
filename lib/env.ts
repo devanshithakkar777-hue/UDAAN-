@@ -16,14 +16,16 @@ export const env = {
   },
   get ipSalt() { return process.env.IP_HASH_SALT ?? "dev-salt"; },
   get cronSecret() { return process.env.CRON_SECRET ?? ""; },
-  get aiProvider(): "anthropic" | "mock" {
-    const p = process.env.AI_PROVIDER ?? (process.env.ANTHROPIC_API_KEY ? "anthropic" : "mock");
+  get aiProvider(): "anthropic" | "groq" | "mock" {
+    const p = process.env.AI_PROVIDER ?? (process.env.ANTHROPIC_API_KEY ? "anthropic" : process.env.GROQ_API_KEY ? "groq" : "mock");
     if (p === "mock" && prod) throw new Error("AI_PROVIDER=mock is not allowed in production");
-    return p === "anthropic" ? "anthropic" : "mock";
+    return p === "anthropic" ? "anthropic" : p === "groq" ? "groq" : "mock";
   },
   get anthropicKey() { return req("ANTHROPIC_API_KEY"); },
-  get model() { return process.env.ANTHROPIC_MODEL ?? "claude-sonnet-5-5"; },
-  get classifierModel() { return process.env.ANTHROPIC_CLASSIFIER_MODEL ?? "claude-haiku-5-5"; },
+  get groqKey() { return req("GROQ_API_KEY"); },
+  /** Default model per provider. Admin can override at runtime (Controls tab). */
+  get model() { return this.aiProvider === "groq" ? (process.env.GROQ_MODEL ?? "llama-3.3-70b-versatile") : (process.env.ANTHROPIC_MODEL ?? "claude-sonnet-5-5"); },
+  get classifierModel() { return this.aiProvider === "groq" ? (process.env.GROQ_CLASSIFIER_MODEL ?? "llama-3.1-8b-instant") : (process.env.ANTHROPIC_CLASSIFIER_MODEL ?? "claude-haiku-5-5"); },
   get adminBootstrapEmail() { return (process.env.ADMIN_BOOTSTRAP_EMAIL ?? "").toLowerCase(); },
   get crisisVerified() { return process.env.CRISIS_RESOURCES_VERIFIED === "true"; },
   get vapid() {
