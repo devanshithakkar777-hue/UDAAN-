@@ -43,9 +43,9 @@ const anthropicProvider: AiProvider = {
 async function groqRequest(o: GenOpts, stream: boolean, signal?: AbortSignal): Promise<Response> {
   const model = await pickModel(o.model);
   const body = {
-    model, stream, max_tokens: o.maxTokens ?? (stream ? 1600 : 1000),
-    // gpt-oss models reason before answering; keep that short so replies are fast and the token budget goes to the answer.
-    ...(model.startsWith("openai/gpt-oss") ? { reasoning_effort: "low" } : {}),
+    model, stream, max_tokens: o.maxTokens ?? (stream ? 4000 : 3000),
+    // gpt-oss models reason before answering. High effort for quality; the larger max_tokens leaves room for the answer after the reasoning.
+    ...(model.startsWith("openai/gpt-oss") ? { reasoning_effort: "high" } : {}),
     messages: [{ role: "system", content: o.system }, ...o.messages],
     ...(o.json ? { response_format: { type: "json_object" } } : {}),
   };
