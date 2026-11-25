@@ -9,3 +9,7 @@ coverage
 .DS_Store
 eval-results
 eval-report.md
+
+# TypeScript build cache and hosting
+*.tsbuildinfo
+.vercel
