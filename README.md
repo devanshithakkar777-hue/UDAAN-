@@ -1,5 +1,13 @@
 # UDAAN — Find Your Wings
 
+[![Live demo](https://img.shields.io/badge/Live%20demo-udaan--7alw.onrender.com-46E3B7?style=for-the-badge&logo=render&logoColor=black)](https://udaan-7alw.onrender.com)
+![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+
+> **Try it live:** <https://udaan-7alw.onrender.com>. The demo runs on free hosting and may take about 50 seconds to wake up on the first visit.
+
 An AI personal-growth and emotional-wellness companion. *Comfort when needed, challenge when necessary, encourage always.* It is built to make people need it less over time, not more.
 
 Mobile-first PWA · Next.js 16 (App Router) · TypeScript · Postgres 16 · Claude via the Anthropic API.
